@@ -90,7 +90,7 @@ def getHTML(pageNum):
     return html
 
 # get number of available appointments each day listed
-def parseResp(html, apptsDict={}):
+def parseResp(html, apptsDict):
     parsed_html = BeautifulSoup(html, features='html.parser')
     
     gilletteList = parsed_html.body.div.find_all('div', attrs={'class':'md:flex-shrink text-gray-800'})
@@ -119,13 +119,14 @@ def parseResp(html, apptsDict={}):
 def run():
     # set request interval to 5 seconds so as to not overload the site
     sleepy = 5
-    prevAppt = {}
+    prevAppts = {}
     stats = {"minutes":0, "appts":0}
 
     while True:
+        appts = {}
         try:
             htmlPage1 = getHTML('1')
-            appts = parseResp(htmlPage1)
+            appts = parseResp(htmlPage1, appts)
             
             htmlPage2 = getHTML('2')
             appts = parseResp(htmlPage2, appts)
@@ -142,15 +143,22 @@ def run():
 
         stats['minutes'] += 1/12
 
+        prevAppts = appts if prevAppts == {} else prevAppts
+
         # when an appointment becomes available, only send one email
-        if appts == prevAppt:
+        if appts == prevAppts:
             time.sleep(sleepy)
             continue
-        prevAppt = appts
 
+        sum = 0
+        prevSum = 0
         for d in appts:
-            if appts[d] > 0 and sendEmailNot:
-                
+            sum += appts[d]
+            prevSum += prevAppts[d]
+
+        if sum > prevSum: 
+            if sendEmailNot:
+            
                 try:
                     msg = craftMessage(d)
                     sendEmail(msg)
@@ -159,9 +167,10 @@ def run():
                     time.sleep(sleepy)
                     continue
 
-                print("Found appointment!!")
-                stats['appts'] += 1
+            print("Found appointment!!")
+            stats['appts'] += 1
 
+        prevAppts = appts
         time.sleep(sleepy)
 
 if __name__ == "__main__":
