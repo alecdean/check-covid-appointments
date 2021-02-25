@@ -47,11 +47,51 @@ To create your gmail app credentials, follow these steps:
 
 ## Usage
 
-Once you've filled out the *config.json* file to your satisfaction, simply run the following commands:
-
+Copy the program to your computer by running 
 ```
 git clone https://github.com/alecdean/check-covid-appointments.git
 cd check-covid-appointments
+```
+
+### Configuration
+
+Please fill out the config.json file to your preferences:
+
+```
+{
+    // email information
+    "your_email":"",
+
+    // your username (without the @gmail.com part)
+    "your_gmail_username": "",
+
+    // please follow the instructions on the README to get your google app password
+    "your_google_app_password":"",
+
+    // set to true if you'd like to see the average number of requests per minute
+    "print_statistics": false,
+
+    // set to true if you'd an email notification of an appointment
+    "send_email_notification": false,
+
+    // set to false if you don't want a beep to notify you of an opening
+    "play_sound": true,
+
+    // set to true if you'd like to search on 03/03/2021 specifically
+    "specific_date": true,
+    
+    // IMPORTANT: adjust this number to the expected number of pages that you can click through
+    // each additional page takes an extra few seconds to search, so the more pages there are, the longer the program will take
+    "num_pages":1
+}
+
+```
+
+### Running
+
+Once you've filled out the *config.json* file to your satisfaction, simply run the following commands:
+
+```
 python vaccines.py
 ``` 
 

@@ -18,6 +18,8 @@ email = ""
 pswd = ""
 frequency = 1500
 duration = 500
+specificDate = False
+setDate = "2021-03-03"
 
 ######################## Email Functions #######################
 def craftMessage(date):
@@ -87,6 +89,13 @@ def getHTML(pageNum):
         'page': pageNum
     }
 
+    if specificDate:
+        params = {
+            'search_radius': 'All',
+            'q[venue_search_name_or_venue_name_i_cont]': 'Gillette',
+            'q[clinic_date_gteq]': setDate,
+            'commit': 'Search'}
+
     resp = requests.get(baseURL, params=params)
 
     html = resp.text
@@ -129,11 +138,9 @@ def run():
     while True:
         appts = {}
         try:
-            htmlPage1 = getHTML('1')
-            appts = parseResp(htmlPage1, appts)
-            
-            htmlPage2 = getHTML('2')
-            appts = parseResp(htmlPage2, appts)
+            for pg in  range(numPages):
+                htmlPage1 = getHTML(pg+1)
+                appts = parseResp(htmlPage1, appts)
 
         # catch either web connection error or website is overloaded error
         except Exception:
@@ -193,5 +200,7 @@ if __name__ == "__main__":
         user = params['your_gmail_username']
         pswd = params['your_google_app_password']
         playSound = params['play_sound']
+        specificDate = params['specific_date']
+        numPages = params['num_pages']
 
     run()
