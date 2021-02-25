@@ -3,6 +3,7 @@ import smtplib
 import requests
 import json
 import time
+import winsound
 from email.message import EmailMessage
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -11,9 +12,12 @@ from bs4 import BeautifulSoup
 # global variables
 printStats = False
 sendEmailNot = False
+playSound = True
 user = ""
 email = ""
 pswd = ""
+frequency = 1500
+duration = 500
 
 ######################## Email Functions #######################
 def craftMessage(date):
@@ -170,6 +174,9 @@ def run():
             print("Found appointment!!")
             stats['appts'] += 1
 
+            if playSound:
+                winsound.Beep(frequency, duration)
+
         prevAppts = appts
         time.sleep(sleepy)
 
@@ -185,5 +192,6 @@ if __name__ == "__main__":
         email = params['your_email']
         user = params['your_gmail_username']
         pswd = params['your_google_app_password']
+        playSound = params['play_sound']
 
     run()

@@ -12,9 +12,16 @@ This program requires the following dependencies:
   - To install, go to [Python's website](https://www.python.org/downloads/) and download the most recent version of Python
   - During the install process, make sure *Add Python 3.x to PATH* is checked
   - you should be able to open a command line and run ```python --version```
-- Beautiful Soup 4
-  - Once Python is installed, run ```pip install beautifulsoup4```
-  - This library makes it easier to parse the html from web pages
+- Packages
+  - Please install the following python packages by running the following commands:
+  
+  ```
+  pip install beautifulsoup4
+  pip install requests
+  ```
+
+- Beautiful Soup 4: This library makes it easier to parse the html from web pages
+- Requests: This is a library to make http requests to the vaccine appointment website
 - Git
   - Check to see if Git is already installed by running ```git --version```
   - If it's not installed, head to [Git's website](https://git-scm.com/download/win) to install
@@ -44,7 +51,7 @@ Once you've filled out the *config.json* file to your satisfaction, simply run t
 
 ```
 git clone https://github.com/alecdean/check-covid-appointments.git
-cd check-covid-vaccines
+cd check-covid-appointments
 python vaccines.py
 ``` 
 
